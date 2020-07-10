@@ -26,6 +26,7 @@ class CoffeeMachine:
         self.money = money
         self.stage = None
         self.step = None
+        self.welcome()
 
     def do_action(self, input_str=''):
         if self.stage == "buy":
@@ -33,7 +34,7 @@ class CoffeeMachine:
         elif self.stage == "fill":
             self.fill(input_str)
         elif self.stage == "take":
-            self.take(input_str)
+            self.take()
         elif self.stage == "remaining":
             self.remaining()
         elif self.stage is None:
@@ -50,7 +51,7 @@ class CoffeeMachine:
         return True
 
     def welcome(self):
-        self.step = None
+        self.stage = None
         self.step = None
         print('Write action (buy, fill, take, remaining, exit):')
 
@@ -60,7 +61,7 @@ class CoffeeMachine:
                          f'{self.milk} of milk\n'
                          f'{self.beans} of coffee beans\n'
                          f'{self.cups} of disposable cups\n'
-                         f'{self.money} of money\n'
+                         f'${self.money} of money\n'
                          )
         print(result_string)
         self.welcome()
@@ -79,7 +80,7 @@ class CoffeeMachine:
         elif self.water < recipe.water:
             print('Sorry, not enough water!')
             return False
-        elif recipe.milk < self.milk:
+        elif self.milk < recipe.milk:
             print('Sorry, not enough milk!')
             return False
         elif self.beans < recipe.beans:
@@ -93,7 +94,7 @@ class CoffeeMachine:
         self.milk -= recipe.milk
         self.beans -= recipe.beans
         self.cups -= 1
-        self.money += recipe.money
+        self.money += recipe.price
 
     def get_coffee(self, recipe_number):
         recipe = self.recipe_list.get(recipe_number)
@@ -143,8 +144,7 @@ class CoffeeMachine:
 
 
 coffee_machine = CoffeeMachine(400, 540, 120, 9, 550)
-coffee_machine.welcome()
 
 result = True
 while result:
-    result = coffee_machine.init_action(input())
+    result = coffee_machine.init_action(input('> '))
