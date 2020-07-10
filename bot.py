@@ -1,6 +1,7 @@
-# write your code here
-bot_name = 'Amely'
-birth_year = 2020
+print('Hello! My name is Aid.')
+print('I was created in 2020.')
+print('Please, remind me your name.')
 
-print(f'Hello! My name is {bot_name}.')
-print(f'I was created in {birth_year}.')
+# reading a name
+your_name = input()
+print(f'What a great name you have, {your_name}!')
