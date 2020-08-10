@@ -1,9 +1,10 @@
 import random
+import math
 
-pairs = {'scissors': 'rock', 'rock': 'paper', 'paper': 'scissors'}
+default_options = ['paper', 'scissors', 'rock']
 result = {
     'win': {
-        'text': 'Well done. Computer chose {computer_choice} and failed)',
+        'text': 'Well done. Computer chose {computer_choice} and failed',
         'points': 100
     },
     'draw': {
@@ -22,13 +23,13 @@ def print_rps_result(result_win, computer_choice):
     print(result_info['text'].format(computer_choice=computer_choice))
 
 
-def who_win(user_choice, computer_choice):
+def who_win(user_choice, computer_choice, user_options):
     if user_choice == computer_choice:
         return 'draw'
-    elif pairs[user_choice] == computer_choice:
-        return 'losing'
-    else:
+    elif computer_choice in user_options[user_choice]:
         return 'win'
+    else:
+        return 'losing'
 
 
 def get_user():
@@ -51,8 +52,28 @@ def get_rating(user):
     return rating
 
 
+def prepare_options(user_options):
+    length = len(user_options)
+    half = math.ceil((length - 1) / 2)
+
+    user_options = user_options * 3
+    result = {}
+    for i in range(length):
+        result[user_options[i]] = user_options[length + i - half:length + i]
+    return result
+
+
+def get_options():
+    user_options = input().lower()
+    user_options = user_options.split(',') if user_options != '' else default_options
+    return prepare_options(user_options)
+
+
 user_name = get_user()
 user_score = get_rating(user_name)
+options = get_options()
+
+print("Okay, let's start")
 while True:
     user_choice = input()
 
@@ -61,9 +82,9 @@ while True:
         break
     elif user_choice == '!rating':
         print(f'Your rating: {user_score}')
-    elif user_choice in pairs:
-        computer_choice = random.choice(list(pairs.keys()))
-        game_result = who_win(user_choice, computer_choice)
+    elif user_choice in options:
+        computer_choice = random.choice(list(options.keys()))
+        game_result = who_win(user_choice, computer_choice, options)
         user_score += result.get(game_result)['points']
         print_rps_result(game_result, computer_choice)
     else:
