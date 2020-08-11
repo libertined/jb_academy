@@ -5,8 +5,11 @@ while True:
     if command == '/exit':
         print('Bye!')
         break
-    numbers = command.split(' ')
-    if len(numbers) == 1 and numbers[0] != '':
-        print(numbers[0])
-    elif len(numbers) == 2:
-        print(int(numbers[0]) + int(numbers[1]))
+    elif command == '/help':
+        print('The program calculates the sum of numbers')
+        continue
+    elif command == '':
+        continue
+
+    numbers = [int(x) for x in command.split(' ')]
+    print(sum(numbers))
